@@ -45,81 +45,28 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Library versions-->
-		<lombok.version>1.18.20</lombok.version>
-		<log4j.version>2.14.1</log4j.version>
-		<slf4j.version>1.7.32</slf4j.version>
 		<disruptor-maven-plugin.version>3.4.4</disruptor-maven-plugin.version>
-		<datasource-proxy.version>1.7</datasource-proxy.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
-			</dependency>
 			<!--
-			Due to a break in compatibility in the SLF4J binding, as of Log4J2 release 2.11.1, we need to
-			use the following plugin in case of Java 1.8 or greater.
-
-			Log4j API and Core implementation along with Slf4j libraries required are implicit
-			dependencies.
-			-->
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-slf4j18-impl</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			<!--
-			This is to stop receiving errors about failing to load class "org.slf4j.impl.StaticLoggerBinder"
-			-->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>slf4j-api</artifactId>
-						<groupId>org.slf4j</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<!--
-			Asynchronous Logging @see https://logging.apache.org/log4j/2.x/manual/async.html
-			Hint:
-			Don't forget to set system property
-			-Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
-			 to make all loggers asynchronous
-			-->
+				Asynchronous Logging @see https://logging.apache.org/log4j/2.x/manual/async.html
+				Hint:
+				Don't forget to set system property
+				-Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+				 to make all loggers asynchronous
+				-->
 			<dependency>
 				<groupId>com.lmax</groupId>
 				<artifactId>disruptor</artifactId>
 				<version>${disruptor-maven-plugin.version}</version>
-			</dependency>
-			<!-- Datasource proxy -->
-			<dependency>
-				<groupId>net.ttddyy</groupId>
-				<artifactId>datasource-proxy</artifactId>
-				<version>${datasource-proxy.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<!-- Dependencies -->
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<!-- Declare my intention to utilize another log mechanism -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<!-- You can easily generate your own configuration metadata file from items annotated with
 		@ConfigurationProperties by using the spring-boot-configuration-processor jar. The jar includes a Java
 		annotation processor which is invoked as your project is compiled. -->
@@ -128,13 +75,21 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- you need to exclude spring-boot-starter-logging dependency as Logback is the default implementation -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j18-impl</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lmax</groupId>
@@ -143,6 +98,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
