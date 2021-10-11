@@ -15,7 +15,12 @@
 	<description>Java Learning @ Development Path, Spring Core module</description>
 
 	<!-- Dependencies -->
-	<dependencies/>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+	</dependencies>
 
 	<!-- Profiles-->
 	<profiles>
