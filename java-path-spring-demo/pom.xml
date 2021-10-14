@@ -8,11 +8,11 @@
 		<artifactId>java-path-spring</artifactId>
 		<version>2021.1.0</version>
 	</parent>
-	<artifactId>java-path-spring-core</artifactId>
+	<artifactId>java-path-spring-demo</artifactId>
 
 	<!-- Meta-data -->
 	<name>[${project.artifactId}]</name>
-	<description>Java Learning @ Development Path, Spring Core module</description>
+	<description>Java Learning @ Development Path, Spring Demo module</description>
 
 	<!-- Dependencies -->
 	<dependencies>
