@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * Abstract class used to provide logging functionality to all components.
@@ -14,5 +15,10 @@ public abstract class AbstractLogComponent {
 	@PostConstruct
 	private void init() {
 		logger.trace("Loaded {}.", getClass().getName());
+	}
+
+	@PreDestroy
+	private void destroy() {
+		logger.trace("Ready to destroy {}.", getClass().getName());
 	}
 }
