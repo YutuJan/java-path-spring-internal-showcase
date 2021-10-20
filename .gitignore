@@ -59,10 +59,10 @@ dependency-reduced-pom.xml
 # based on https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore #
 #######################################################################################
 *.iml
-.idea/
+.idea/**
 *.ipr
 *.iws
-/out/
+**/out/
 .idea_modules/
 atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
@@ -92,7 +92,7 @@ node
 .gitconfig
 docker
 
-/logs/
+**/logs/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
