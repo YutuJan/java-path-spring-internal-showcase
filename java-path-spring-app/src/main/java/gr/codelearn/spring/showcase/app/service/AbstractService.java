@@ -2,7 +2,7 @@ package gr.codelearn.spring.showcase.app.service;
 
 import gr.codelearn.spring.showcase.app.base.AbstractLogComponent;
 import gr.codelearn.spring.showcase.app.domain.BaseEntity;
-import gr.codelearn.spring.showcase.app.repository.BaseRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractService<T extends BaseEntity> extends AbstractLogComponent
 		implements BaseService<T, Long> {
-	public abstract BaseRepository<T, Long> getRepository();
+	public abstract JpaRepository<T, Long> getRepository();
 
 	@Override
 	public List<T> createAll(final T... entities) {
@@ -29,13 +29,13 @@ public abstract class AbstractService<T extends BaseEntity> extends AbstractLogC
 	@Override
 	public T create(final T entity) {
 		logger.trace("Creating {}.", entity);
-		return getRepository().create(entity);
+		return getRepository().save(entity);
 	}
 
 	@Override
 	public void update(final T entity) {
 		logger.trace("Updating {}.", entity);
-		getRepository().create(entity);
+		getRepository().save(entity);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public abstract class AbstractService<T extends BaseEntity> extends AbstractLogC
 
 	@Override
 	public void deleteById(final Long id) {
-		final T entityFound = getRepository().findById(id);
+		final T entityFound = getRepository().getById(id);
 		logger.trace("Deleting {}.", entityFound);
 		getRepository().deleteById(id);
 	}
@@ -54,7 +54,7 @@ public abstract class AbstractService<T extends BaseEntity> extends AbstractLogC
 	@Override
 	public boolean exists(final T entity) {
 		logger.trace("Checking whether {} exists.", entity);
-		return getRepository().exists(entity);
+		return getRepository().existsById(entity.getId());
 	}
 
 	@Override

@@ -2,16 +2,29 @@ package gr.codelearn.spring.showcase.app.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * This class represents a category in which products are organized.
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "CATEGORIES")
+@SequenceGenerator(name = "idGenerator", sequenceName = "CATEGORIES_SEQ", initialValue = 1, allocationSize = 1)
 public class Category extends BaseEntity {
+	@NotNull
+	@Column(length = 50, nullable = false)
 	private String description;
 }
