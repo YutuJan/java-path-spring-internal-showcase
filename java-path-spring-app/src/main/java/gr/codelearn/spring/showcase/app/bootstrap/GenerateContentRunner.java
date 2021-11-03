@@ -61,12 +61,12 @@ public class GenerateContentRunner extends AbstractLogComponent implements Comma
 					   .price(BigDecimal.valueOf(1299.99)).category(newCategory).build()
 										);
 		//@formatter:on
-		logger.info("Created 10 products.");
 		productService.createAll(products);
+		logger.info("Created 10 products.");
 
 		logger.info("Get back the products.");
 		logger.info("----------------------");
-		productService.findAll().forEach(p -> logger.info("{}", p));
+		productService.findAllLazy().forEach(p -> logger.info("{}", p));
 	}
 
 	private void generateCustomers() {
