@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl extends AbstractService<Customer> implements CustomerService {
+public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements CustomerService {
 	private final CustomerRepository customerRepository;
 
 	@Override
