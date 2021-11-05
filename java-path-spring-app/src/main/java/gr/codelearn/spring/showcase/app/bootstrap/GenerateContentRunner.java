@@ -4,6 +4,8 @@ import gr.codelearn.spring.showcase.app.base.AbstractLogComponent;
 import gr.codelearn.spring.showcase.app.domain.Category;
 import gr.codelearn.spring.showcase.app.domain.Customer;
 import gr.codelearn.spring.showcase.app.domain.CustomerCategory;
+import gr.codelearn.spring.showcase.app.domain.Order;
+import gr.codelearn.spring.showcase.app.domain.PaymentMethod;
 import gr.codelearn.spring.showcase.app.domain.Product;
 import gr.codelearn.spring.showcase.app.service.CategoryService;
 import gr.codelearn.spring.showcase.app.service.CustomerService;
@@ -28,9 +30,9 @@ public class GenerateContentRunner extends AbstractLogComponent implements Comma
 
 	@Override
 	public void run(String... args) {
-		generateProducts();
-		generateCustomers();
-		//generateOrders();
+		//generateProducts();
+		//generateCustomers();
+		generateOrders();
 		logger.info("Runner finished");
 	}
 
@@ -124,14 +126,8 @@ public class GenerateContentRunner extends AbstractLogComponent implements Comma
 		logger.info("Does customer exist? {}.", (customerService.findByEmail("non-existing@gmail.com") != null));
 
 	}
-	/*
-	private void generateOrders() {
-		// Requirements
-		// 1) Implement findBySerial()
-		// 2) Expose all the orders
-		// 3) Expose a find by serial functionality
-		// 4) Expose a functionality that shows all the orders that are above 1500 euros
 
+	private void generateOrders() {
 		// Load customer and create an order by adding/updating/removing content before checking it out
 		Customer firstCustomer = customerService.findByEmail("c.giannacoulis@codehub.gr");
 		Order firstOrder = orderService.initiateOrder(firstCustomer);
@@ -182,6 +178,4 @@ public class GenerateContentRunner extends AbstractLogComponent implements Comma
 		// Checkout 4th order
 		orderService.checkout(fourthOrder, PaymentMethod.CREDIT_CARD);
 	}
-	 */
-
 }
