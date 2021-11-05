@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public abstract class AbstractService<T extends BaseEntity> extends AbstractLogComponent
+public abstract class BaseServiceImpl<T extends BaseEntity> extends AbstractLogComponent
 		implements BaseService<T, Long> {
 	public abstract JpaRepository<T, Long> getRepository();
 
@@ -65,6 +66,6 @@ public abstract class AbstractService<T extends BaseEntity> extends AbstractLogC
 
 	@Override
 	public T find(Long id) {
-		return null;
+		return getRepository().findById(id).orElseThrow(NoSuchElementException::new);
 	}
 }
