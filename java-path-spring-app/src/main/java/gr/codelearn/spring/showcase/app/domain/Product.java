@@ -41,7 +41,7 @@ public class Product extends BaseEntity {
 	private BigDecimal price;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Category category;
 
 }

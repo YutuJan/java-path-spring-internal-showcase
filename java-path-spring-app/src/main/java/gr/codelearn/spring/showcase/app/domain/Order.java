@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Delegate;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -27,6 +28,12 @@ import java.util.Set;
 @Table(name = "ORDERS", indexes = {@Index(columnList = "customer_id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "ORDERS_SEQ", initialValue = 1, allocationSize = 1)
 public class Order extends BaseEntity {
+	private interface MinimalSet {
+		boolean add(OrderItem item);
+
+		boolean remove(OrderItem item);
+	}
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private Customer customer;
@@ -36,6 +43,9 @@ public class Order extends BaseEntity {
 	@Column(nullable = false)
 	private Date submitDate;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@Delegate(types = MinimalSet.class)
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
 	private final Set<OrderItem> orderItems = new HashSet<>();
 
