@@ -11,4 +11,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query("select p from Product p join fetch p.category")
 	List<Product> findAllLazy();
+
+	Product findBySerial(String product);
 }
