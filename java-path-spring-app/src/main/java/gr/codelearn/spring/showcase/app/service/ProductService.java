@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductService extends BaseService<Product, Long> {
 	List<Product> findAllLazy();
+
+	Product findBySerial(String serial);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl extends AbstractService<Product> implements ProductService {
+public class ProductServiceImpl extends BaseServiceImpl<Product> implements ProductService {
 	private final ProductRepository productRepository;
 
 	@Override
@@ -21,5 +21,10 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 	@Override
 	public List<Product> findAllLazy() {
 		return productRepository.findAllLazy();
+	}
+
+	@Override
+	public Product findBySerial(String serial) {
+		return productRepository.findBySerial(serial);
 	}
 }

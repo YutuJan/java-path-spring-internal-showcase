@@ -6,16 +6,21 @@ import gr.codelearn.spring.showcase.app.domain.OrderItem;
 import gr.codelearn.spring.showcase.app.domain.PaymentMethod;
 import gr.codelearn.spring.showcase.app.domain.Product;
 import gr.codelearn.spring.showcase.app.repository.OrderRepository;
+import gr.codelearn.spring.showcase.app.transfer.KeyValue;
+import gr.codelearn.spring.showcase.app.transfer.PurchasesPerCustomerCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl extends AbstractService<Order> implements OrderService {
+public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderService {
 	private final OrderRepository orderRepository;
 
 	@Override
@@ -46,7 +51,7 @@ public class OrderServiceImpl extends AbstractService<Order> implements OrderSer
 		}
 
 		if (!increasedQuantity) {
-			order.getOrderItems().add(newOrderItem(order, product, quantity));
+			order.add(newOrderItem(order, product, quantity));
 		}
 
 		logger.debug("Product[{}] added to Order[{}]", product, order);
@@ -102,12 +107,31 @@ public class OrderServiceImpl extends AbstractService<Order> implements OrderSer
 		return create(order);
 	}
 
+	@Override
+	public Order getLazy(Long id) {
+		Optional<Order> order = orderRepository.getLazy(id);
+		if (order.isPresent()) {
+			return order.get();
+		}
+		throw new NoSuchElementException(String.format("There was no order found matching id %d.", id));
+	}
+
+	@Override
+	public List<Order> findAllLazy() {
+		return orderRepository.findAllLazy();
+	}
+
+	//	@Override
+	//	public List<KeyValue<String, BigDecimal>> findAverageOrderCostPerCustomer() {
+	//		return orderRepository.findAverageOrderCostPerCustomer();
+	//	}
+
 	private boolean validate(Order order) {
 		return order != null && !order.getOrderItems().isEmpty() && order.getCustomer() != null;
 	}
 
 	private OrderItem newOrderItem(Order order, Product product, int quantity) {
-		return OrderItem.builder().product(product).quantity(quantity).price(product.getPrice()).build();
+		return OrderItem.builder().product(product).order(order).quantity(quantity).price(product.getPrice()).build();
 	}
 
 	private BigDecimal giveDiscounts(Order order) {
@@ -128,5 +152,15 @@ public class OrderServiceImpl extends AbstractService<Order> implements OrderSer
 					 totalDiscount, finalCost);
 
 		return finalCost;
+	}
+
+	@Override
+	public List<KeyValue<String, BigDecimal>> findAverageOrderCostPerCustomer() {
+		return orderRepository.findAverageOrderCostPerCustomer();
+	}
+
+	@Override
+	public List<PurchasesPerCustomerCategory> findTotalNumberAndCostOfPurchasesPerCustomerCategory() {
+		return orderRepository.findTotalNumberAndCostOfPurchasesPerCustomerCategory();
 	}
 }
